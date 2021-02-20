@@ -1,0 +1,41 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Untitled Paw Document",
+    "version": "v0.0.0"
+  },
+  "host": "127.0.0.1:8545",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "post": {
+        "summary": "miner_stop",
+        "description": "",
+        "operationId": "35b15a68-b230-4156-a0d5-763f2aa1ac27",
+        "consumes": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"miner_stop\",\n    \"params\": [],\n    \"id\": 1\n}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
