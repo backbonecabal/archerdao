@@ -1,0 +1,64 @@
+Node
+{
+  "type": "array",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "minItems": 1,
+  "uniqueItems": true,
+  "items": {
+    "type": "object",
+    "required": [
+      "inputs",
+      "name",
+      "outputs",
+      "stateMutability",
+      "type"
+    ],
+    "properties": {
+      "inputs": {
+        "type": "array",
+        "items": {
+          "required": [],
+          "properties": {}
+        }
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "outputs": {
+        "type": "array",
+        "uniqueItems": true,
+        "minItems": 1,
+        "items": {
+          "required": [
+            "internalType",
+            "name",
+            "type"
+          ],
+          "properties": {
+            "internalType": {
+              "type": "string",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "stateMutability": {
+        "type": "string",
+        "minLength": 1
+      },
+      "type": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

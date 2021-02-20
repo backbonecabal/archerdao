@@ -1,8 +1,7 @@
 {
   "name": "archerdao-api",
   "version": "1.0.0",
-  "dependencies": {
-  },
+  "dependencies": {},
   "private": true,
   "scripts": {
     "start": "openapi preview-docs",
