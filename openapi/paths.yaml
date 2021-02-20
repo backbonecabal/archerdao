@@ -2,35 +2,35 @@ post:
   summary: constructor()
   operationId: constructor_post
   parameters:
-    - $ref: '#/components/parameters/fromParam'
-    - $ref: '#/components/parameters/valueParam'
-    - $ref: '#/components/parameters/gasParam'
-    - $ref: '#/components/parameters/gaspriceParam'
-    - $ref: '#/components/parameters/syncParam'
-    - $ref: '#/components/parameters/callParam'
-    - $ref: '#/components/parameters/privateFromParam'
-    - $ref: '#/components/parameters/privateForParam'
-    - $ref: '#/components/parameters/blocknumberParam'
-    - $ref: '#/components/parameters/registerParam'
+    - $ref: "#/components/parameters/fromParam"
+    - $ref: "#/components/parameters/valueParam"
+    - $ref: "#/components/parameters/gasParam"
+    - $ref: "#/components/parameters/gaspriceParam"
+    - $ref: "#/components/parameters/syncParam"
+    - $ref: "#/components/parameters/callParam"
+    - $ref: "#/components/parameters/privateFromParam"
+    - $ref: "#/components/parameters/privateForParam"
+    - $ref: "#/components/parameters/blocknumberParam"
+    - $ref: "#/components/parameters/registerParam"
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/constructor_inputs'
+          $ref: "#/components/schemas/constructor_inputs"
       application/x-yaml:
         schema:
-          $ref: '#/components/schemas/constructor_inputs'
+          $ref: "#/components/schemas/constructor_inputs"
     required: true
   responses:
-    '200':
+    "200":
       description: successful response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/constructor_outputs'
+            $ref: "#/components/schemas/constructor_outputs"
     default:
       description: error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: "#/components/schemas/error"

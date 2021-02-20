@@ -1,1 +1,1 @@
-module.exports = require('archerdao-contracts')(module);
+module.exports = require("archerdao-contracts")(module);

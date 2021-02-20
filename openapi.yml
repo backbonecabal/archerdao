@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: ArcherDAO API
-  version: '1.0'
+  version: "1.0"
   contact: {}
 paths:
   /:
@@ -9,42 +9,42 @@ paths:
       summary: constructor()
       operationId: constructor_post
       parameters:
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
-        - $ref: '#/components/parameters/syncParam'
-        - $ref: '#/components/parameters/callParam'
-        - $ref: '#/components/parameters/privateFromParam'
-        - $ref: '#/components/parameters/privateForParam'
-        - $ref: '#/components/parameters/blocknumberParam'
-        - $ref: '#/components/parameters/registerParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
+        - $ref: "#/components/parameters/syncParam"
+        - $ref: "#/components/parameters/callParam"
+        - $ref: "#/components/parameters/privateFromParam"
+        - $ref: "#/components/parameters/privateForParam"
+        - $ref: "#/components/parameters/blocknumberParam"
+        - $ref: "#/components/parameters/registerParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/constructor_inputs'
+              $ref: "#/components/schemas/constructor_inputs"
           application/x-yaml:
             schema:
-              $ref: '#/components/schemas/constructor_inputs'
+              $ref: "#/components/schemas/constructor_inputs"
         required: true
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/constructor_outputs'
+                $ref: "#/components/schemas/constructor_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
 
-  '/{address}/getPrice':
+  "/{address}/getPrice":
     get:
-      summary: 'getPrice(address,bytes) [read only]'
+      summary: "getPrice(address,bytes) [read only]"
       operationId: getPrice_get
       parameters:
         - description: The contract address
@@ -53,37 +53,37 @@ paths:
           required: true
           schema:
             type: string
-        - description: 'address: contract to query'
+        - description: "address: contract to query"
           name: contractAddress
           in: query
           required: true
           schema:
             type: string
-        - description: 'bytes: the bytecode for the contract call'
+        - description: "bytes: the bytecode for the contract call"
           name: data
           in: query
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getPrice_outputs'
+                $ref: "#/components/schemas/getPrice_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
     post:
-      summary: 'getPrice(address,bytes) [read only]'
+      summary: "getPrice(address,bytes) [read only]"
       operationId: getPrice_post
       parameters:
         - description: The contract address
@@ -92,40 +92,40 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
-        - $ref: '#/components/parameters/syncParam'
-        - $ref: '#/components/parameters/callParam'
-        - $ref: '#/components/parameters/privateFromParam'
-        - $ref: '#/components/parameters/privateForParam'
-        - $ref: '#/components/parameters/blocknumberParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
+        - $ref: "#/components/parameters/syncParam"
+        - $ref: "#/components/parameters/callParam"
+        - $ref: "#/components/parameters/privateFromParam"
+        - $ref: "#/components/parameters/privateForParam"
+        - $ref: "#/components/parameters/blocknumberParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/getPrice_inputs'
+              $ref: "#/components/schemas/getPrice_inputs"
           application/x-yaml:
             schema:
-              $ref: '#/components/schemas/getPrice_inputs'
+              $ref: "#/components/schemas/getPrice_inputs"
         required: true
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getPrice_outputs'
+                $ref: "#/components/schemas/getPrice_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
-  '/{address}/query':
+                $ref: "#/components/schemas/error"
+  "/{address}/query":
     get:
-      summary: 'query(bytes,uint256[]) [read only]'
+      summary: "query(bytes,uint256[]) [read only]"
       operationId: query_get
       parameters:
         - description: The contract address
@@ -150,25 +150,25 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/query_outputs'
+                $ref: "#/components/schemas/query_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
     post:
-      summary: 'query(bytes,uint256[]) [read only]'
+      summary: "query(bytes,uint256[]) [read only]"
       operationId: query_post
       parameters:
         - description: The contract address
@@ -177,40 +177,40 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
-        - $ref: '#/components/parameters/syncParam'
-        - $ref: '#/components/parameters/callParam'
-        - $ref: '#/components/parameters/privateFromParam'
-        - $ref: '#/components/parameters/privateForParam'
-        - $ref: '#/components/parameters/blocknumberParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
+        - $ref: "#/components/parameters/syncParam"
+        - $ref: "#/components/parameters/callParam"
+        - $ref: "#/components/parameters/privateFromParam"
+        - $ref: "#/components/parameters/privateForParam"
+        - $ref: "#/components/parameters/blocknumberParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/query_inputs'
+              $ref: "#/components/schemas/query_inputs"
           application/x-yaml:
             schema:
-              $ref: '#/components/schemas/query_inputs'
+              $ref: "#/components/schemas/query_inputs"
         required: true
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/query_outputs'
+                $ref: "#/components/schemas/query_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
-  '/{address}/queryAllPrices':
+                $ref: "#/components/schemas/error"
+  "/{address}/queryAllPrices":
     get:
-      summary: 'queryAllPrices(bytes,uint256[]) [read only]'
+      summary: "queryAllPrices(bytes,uint256[]) [read only]"
       operationId: queryAllPrices_get
       parameters:
         - description: The contract address
@@ -235,25 +235,25 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/queryAllPrices_outputs'
+                $ref: "#/components/schemas/queryAllPrices_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
     post:
-      summary: 'queryAllPrices(bytes,uint256[]) [read only]'
+      summary: "queryAllPrices(bytes,uint256[]) [read only]"
       operationId: queryAllPrices_post
       parameters:
         - description: The contract address
@@ -262,39 +262,39 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/fromParam'
-        - $ref: '#/components/parameters/valueParam'
-        - $ref: '#/components/parameters/gasParam'
-        - $ref: '#/components/parameters/gaspriceParam'
-        - $ref: '#/components/parameters/syncParam'
-        - $ref: '#/components/parameters/callParam'
-        - $ref: '#/components/parameters/privateFromParam'
-        - $ref: '#/components/parameters/privateForParam'
-        - $ref: '#/components/parameters/blocknumberParam'
+        - $ref: "#/components/parameters/fromParam"
+        - $ref: "#/components/parameters/valueParam"
+        - $ref: "#/components/parameters/gasParam"
+        - $ref: "#/components/parameters/gaspriceParam"
+        - $ref: "#/components/parameters/syncParam"
+        - $ref: "#/components/parameters/callParam"
+        - $ref: "#/components/parameters/privateFromParam"
+        - $ref: "#/components/parameters/privateForParam"
+        - $ref: "#/components/parameters/blocknumberParam"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/queryAllPrices_inputs'
+              $ref: "#/components/schemas/queryAllPrices_inputs"
           application/x-yaml:
             schema:
-              $ref: '#/components/schemas/queryAllPrices_inputs'
+              $ref: "#/components/schemas/queryAllPrices_inputs"
         required: true
       responses:
-        '200':
+        "200":
           description: successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/queryAllPrices_outputs'
+                $ref: "#/components/schemas/queryAllPrices_outputs"
         default:
           description: error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
+                $ref: "#/components/schemas/error"
 servers:
-  - url: 'https://archer.backbonecabal.com/gateways/archerdao'
+  - url: "https://archer.backbonecabal.com/gateways/archerdao"
 components:
   parameters:
     blocknumberParam:
@@ -316,12 +316,12 @@ components:
       schema:
         type: boolean
     fromParam:
-      description: 'The ''from'' address (header: x-manifold-from)'
+      description: "The 'from' address (header: x-manifold-from)"
       name: fold-from
       in: query
       schema:
         type: string
-        default: '0xf62fbd52d83fded97386fb9dfcb0bfbb3c164147'
+        default: "0xf62fbd52d83fded97386fb9dfcb0bfbb3c164147"
     gasParam:
       description: >-
         Gas to send with the transaction (auto-calculated if not set) (header:
@@ -332,14 +332,14 @@ components:
       schema:
         type: integer
     gaspriceParam:
-      description: 'Gas Price offered (header: x-manifold-gasprice)'
+      description: "Gas Price offered (header: x-manifold-gasprice)"
       name: fold-gasprice
       in: query
       allowEmptyValue: true
       schema:
         type: integer
     privacyGroupIdParam:
-      description: 'Private transaction group ID (header: x-manifold-privacyGroupId)'
+      description: "Private transaction group ID (header: x-manifold-privacyGroupId)"
       name: fold-privacygroupid
       in: query
       schema:
@@ -353,7 +353,7 @@ components:
       schema:
         type: string
     privateFromParam:
-      description: 'Private transaction sender (header: x-manifold-privatefrom)'
+      description: "Private transaction sender (header: x-manifold-privatefrom)"
       name: fold-privatefrom
       in: query
       schema:
@@ -377,7 +377,7 @@ components:
         type: boolean
         default: true
     valueParam:
-      description: 'Ether value to send with the transaction (header: x-manifold-ethvalue)'
+      description: "Ether value to send with the transaction (header: x-manifold-ethvalue)"
       name: fold-ethvalue
       in: query
       allowEmptyValue: true
@@ -397,20 +397,20 @@ components:
       type: object
       properties:
         contractAddress:
-          description: 'address: contract to query'
+          description: "address: contract to query"
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]{40}$'
+          pattern: "^(0x)?[a-fA-F0-9]{40}$"
         data:
-          description: 'bytes: the bytecode for the contract call'
+          description: "bytes: the bytecode for the contract call"
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]+$'
+          pattern: "^(0x)?[a-fA-F0-9]+$"
     getPrice_outputs:
       type: object
       properties:
         output:
           description: bytes
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]+$'
+          pattern: "^(0x)?[a-fA-F0-9]+$"
     queryAllPrices_inputs:
       type: object
       properties:
@@ -421,20 +421,20 @@ components:
           type: array
           items:
             type: string
-            pattern: '^-?[0-9]+$'
+            pattern: "^-?[0-9]+$"
         script:
           description: >-
             bytes: the compiled bytecode for the series of function calls to get
             the final price
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]+$'
+          pattern: "^(0x)?[a-fA-F0-9]+$"
     queryAllPrices_outputs:
       type: object
       properties:
         output:
           description: bytes
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]+$'
+          pattern: "^(0x)?[a-fA-F0-9]+$"
     query_inputs:
       type: object
       properties:
@@ -445,20 +445,20 @@ components:
           type: array
           items:
             type: string
-            pattern: '^-?[0-9]+$'
+            pattern: "^-?[0-9]+$"
         script:
           description: >-
             bytes: the compiled bytecode for the series of function calls to get
             the final price
           type: string
-          pattern: '^(0x)?[a-fA-F0-9]+$'
+          pattern: "^(0x)?[a-fA-F0-9]+$"
     query_outputs:
       type: object
       properties:
         output:
           description: uint256
           type: string
-          pattern: '^-?[0-9]+$'
+          pattern: "^-?[0-9]+$"
   links: {}
   callbacks: {}
 security: []

@@ -1,6 +1,6 @@
-description: 'The ''from'' address (header: x-manifold-from)'
+description: "The 'from' address (header: x-manifold-from)"
 name: fold-from
 in: query
 schema:
   type: string
-  default: '0xf62fbd52d83fded97386fb9dfcb0bfbb3c164147'
+  default: "0xf62fbd52d83fded97386fb9dfcb0bfbb3c164147"

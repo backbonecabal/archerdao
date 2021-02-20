@@ -7,10 +7,10 @@ properties:
     type: array
     items:
       type: string
-      pattern: '^-?[0-9]+$'
+      pattern: "^-?[0-9]+$"
   script:
     description: >-
       bytes: the compiled bytecode for the series of function calls to get the
       final price
     type: string
-    pattern: '^(0x)?[a-fA-F0-9]+$'
+    pattern: "^(0x)?[a-fA-F0-9]+$"

@@ -26,7 +26,7 @@ paths:
 
   /getallninjas:
     get:
-      tags: [ "Ninjas" ]
+      tags: ["Ninjas"]
       description: "Get All Ninjas"
       operationId: "getAllNinjas"
       parameters: []
@@ -35,7 +35,7 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Health"
-    x-swagger-router-controller: "test.controller"    
+    x-swagger-router-controller: "test.controller"
 
   /getninjabyid/{id}:
     get:
@@ -53,7 +53,7 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Health"
-    x-swagger-router-controller: "test.controller" 
+    x-swagger-router-controller: "test.controller"
 
   /getninjabyname/{name}:
     get:
@@ -71,7 +71,7 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Health"
-    x-swagger-router-controller: "test.controller" 
+    x-swagger-router-controller: "test.controller"
 
   /getninjabyrank/{rank}:
     get:
@@ -89,8 +89,8 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Health"
-    x-swagger-router-controller: "test.controller" 
-  
+    x-swagger-router-controller: "test.controller"
+
 definitions:
   Health:
     description: "Health Response"
@@ -99,4 +99,3 @@ definitions:
         type: "string"
     example:
       message: "OK"
-      

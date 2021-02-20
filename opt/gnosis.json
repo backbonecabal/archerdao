@@ -1,1929 +1,2121 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"title": "Gnosis Safe Relay API",
-		"description": "API to manage creation of safes and multisig transaction sending",
-		"contact": {
-			"email": "uxio@gnosis.pm"
-		},
-		"license": {
-			"name": "MIT License"
-		},
-		"version": "v1"
-	},
-	"host": "safe-relay.gnosis.io",
-	"schemes": ["https"],
-	"basePath": "/api",
-	"consumes": ["application/json"],
-	"produces": ["application/json"],
-	"securityDefinitions": {
-		"Basic": {
-			"type": "basic"
-		}
-	},
-	"security": [{
-		"Basic": []
-	}],
-	"paths": {
-		"/v1/about/": {
-			"get": {
-				"operationId": "v1_about_list",
-				"description": "",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/gas-station/": {
-			"get": {
-				"operationId": "v1_gas-station_list",
-				"description": "Gets current gas prices for the ethereum network (using last 200 blocks)\n`Lowest` and `fastest` are the lower and the higher gas prices found in those blocks\nThe rest are percentiles on all the gas prices in the last blocks.\n`safe_low=percentile 30`, `standard=percentile 50` and `fast=percentile 75`",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/GasPrice"
-						}
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/gas-station/history/": {
-			"get": {
-				"operationId": "v1_gas-station_history_list",
-				"description": "",
-				"parameters": [{
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "fromDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats from. If not set, 1 month before now",
-					"type": "string",
-					"format": "date-time"
-				}, {
-					"name": "toDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats to. If not set, now",
-					"type": "string",
-					"format": "date-time"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/GasPrice"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/private/api-token-auth/": {
-			"post": {
-				"operationId": "v1_private_api-token-auth_create",
-				"description": "",
-				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/private/safes/": {
-			"get": {
-				"operationId": "v1_private_safes_list",
-				"description": "",
-				"parameters": [{
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/SafeContract"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/safes/{address}/": {
-			"get": {
-				"operationId": "v1_safes_read",
-				"description": "Get status of the safe",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeResponse"
-						}
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/balances/": {
-			"get": {
-				"operationId": "v1_safes_balances_list",
-				"description": "Get status of the safe",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/SafeBalanceResponse"
-							}
-						}
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/erc20-transactions/": {
-			"get": {
-				"operationId": "v1_safes_erc20-transactions_list",
-				"description": "",
-				"parameters": [{
-					"name": "ordering",
-					"in": "query",
-					"description": "Which field to use when ordering the results.",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ERC20"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found/No data for that Safe"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/erc721-transactions/": {
-			"get": {
-				"operationId": "v1_safes_erc721-transactions_list",
-				"description": "",
-				"parameters": [{
-					"name": "ordering",
-					"in": "query",
-					"description": "Which field to use when ordering the results.",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ERC721"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found/No data for that Safe"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/funded/": {
-			"get": {
-				"operationId": "v1_safes_funded_list",
-				"description": "Get status of the safe creation",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeFundingResponse"
-						}
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"put": {
-				"operationId": "v1_safes_funded_update",
-				"description": "Force check of a safe balance to start the safe creation",
-				"parameters": [],
-				"responses": {
-					"202": {
-						"description": "Task was queued"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/transactions/": {
-			"get": {
-				"operationId": "v1_safes_transactions_list",
-				"description": "",
-				"parameters": [{
-					"name": "to",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "value__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "value__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "value",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "operation",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "safe_tx_gas__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "safe_tx_gas__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "safe_tx_gas",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "data_gas__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "data_gas__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "data_gas",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "gas_price__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "gas_price__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "gas_price",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "nonce__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "nonce__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "nonce",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "gas_token",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "safe_tx_hash",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "ethereum_tx__tx_hash",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "ordering",
-					"in": "query",
-					"description": "Which field to use when ordering the results.",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/SafeMultisigTxResponse"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found/No data for that Safe"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"post": {
-				"operationId": "v1_safes_transactions_create",
-				"description": "Send a Safe Multisig Transaction",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeRelayMultisigTx"
-					}
-				}],
-				"responses": {
-					"201": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeMultisigTxResponse"
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid/Tx not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/transactions/estimate/": {
-			"post": {
-				"operationId": "v1_safes_transactions_estimate_create",
-				"description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeMultisigEstimateTx"
-					}
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeMultisigEstimateTxResponse"
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid/Tx not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/safes/{address}/transactions/estimates/": {
-			"post": {
-				"operationId": "v1_safes_transactions_estimates_create",
-				"description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeMultisigEstimateTx"
-					}
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/TransactionEstimationWithNonceAndGasTokensResponse"
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid/Tx not valid"
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v1/stats/": {
-			"get": {
-				"operationId": "v1_stats_list",
-				"description": "Get stats of the Safe Relay Service",
-				"parameters": [{
-					"name": "fromDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats from. If not set, 2018-11-01",
-					"type": "string",
-					"format": "date-time"
-				}, {
-					"name": "toDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats to. If not set, now",
-					"type": "string",
-					"format": "date-time"
-				}],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/stats/history/": {
-			"get": {
-				"operationId": "v1_stats_history_list",
-				"description": "Get historic stats of the Safe Relay Service",
-				"parameters": [{
-					"name": "fromDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats from. If not set, 2018-11-01",
-					"type": "string",
-					"format": "date-time"
-				}, {
-					"name": "toDate",
-					"in": "query",
-					"description": "ISO 8601 date to filter stats to. If not set, now",
-					"type": "string",
-					"format": "date-time"
-				}],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/tokens/": {
-			"get": {
-				"operationId": "v1_tokens_list",
-				"description": "",
-				"parameters": [{
-					"name": "name",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "address",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "symbol",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "gas",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "decimals__lt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "decimals__gt",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "decimals",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "number"
-				}, {
-					"name": "default",
-					"in": "query",
-					"description": "",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "search",
-					"in": "query",
-					"description": "A search term.",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "ordering",
-					"in": "query",
-					"description": "Which field to use when ordering the results.",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "limit",
-					"in": "query",
-					"description": "Number of results to return per page.",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "The initial index from which to return the results.",
-					"required": false,
-					"type": "integer"
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"required": ["count", "results"],
-							"type": "object",
-							"properties": {
-								"count": {
-									"type": "integer"
-								},
-								"next": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"previous": {
-									"type": "string",
-									"format": "uri",
-									"x-nullable": true
-								},
-								"results": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/Token"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": []
-		},
-		"/v1/tokens/{address}/": {
-			"get": {
-				"operationId": "v1_tokens_read",
-				"description": "",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/Token"
-						}
-					}
-				},
-				"tags": ["v1"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"description": "A unique value identifying this token.",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v2/safes/": {
-			"post": {
-				"operationId": "v2_safes_create",
-				"description": "Begins creation of a Gnosis Safe V1.0.0",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeCreation2"
-					}
-				}],
-				"responses": {
-					"201": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeCreation2Response"
-						}
-					},
-					"400": {
-						"description": "Invalid data"
-					},
-					"422": {
-						"description": "Cannot process data"
-					}
-				},
-				"tags": ["v2"]
-			},
-			"parameters": []
-		},
-		"/v2/safes/estimates/": {
-			"post": {
-				"operationId": "v2_safes_estimates_create",
-				"description": "Estimates creation of a Safe",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeCreationEstimateV2"
-					}
-				}],
-				"responses": {
-					"201": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeCreationEstimateResponse"
-						}
-					},
-					"400": {
-						"description": "Invalid data"
-					},
-					"422": {
-						"description": "Cannot process data"
-					}
-				},
-				"tags": ["v2"]
-			},
-			"parameters": []
-		},
-		"/v2/safes/{address}/funded/": {
-			"get": {
-				"operationId": "v2_safes_funded_list",
-				"description": "Get status of the safe creation",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeFunding2Response"
-						}
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v2"]
-			},
-			"put": {
-				"operationId": "v2_safes_funded_update",
-				"description": "Force check of a safe balance to start the safe creation",
-				"parameters": [],
-				"responses": {
-					"202": {
-						"description": "Task was queued"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid"
-					}
-				},
-				"tags": ["v2"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v2/safes/{address}/transactions/estimate/": {
-			"post": {
-				"operationId": "v2_safes_transactions_estimate_create",
-				"description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeMultisigEstimateTx"
-					}
-				}],
-				"responses": {
-					"200": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeMultisigEstimateTxResponseV2"
-						}
-					},
-					"400": {
-						"description": "Data not valid"
-					},
-					"404": {
-						"description": "Safe not found"
-					},
-					"422": {
-						"description": "Safe address checksum not valid/Tx not valid"
-					}
-				},
-				"tags": ["v2"]
-			},
-			"parameters": [{
-				"name": "address",
-				"in": "path",
-				"required": true,
-				"type": "string"
-			}]
-		},
-		"/v3/safes/": {
-			"post": {
-				"operationId": "v3_safes_create",
-				"description": "Begins creation of a Gnosis Safe in its last version (v1.1.1)",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeCreation2"
-					}
-				}],
-				"responses": {
-					"201": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeCreation2Response"
-						}
-					},
-					"400": {
-						"description": "Invalid data"
-					},
-					"422": {
-						"description": "Cannot process data"
-					}
-				},
-				"tags": ["v3"]
-			},
-			"parameters": []
-		},
-		"/v3/safes/estimates/": {
-			"post": {
-				"operationId": "v3_safes_estimates_create",
-				"description": "Estimates creation of a Safe",
-				"parameters": [{
-					"name": "data",
-					"in": "body",
-					"required": true,
-					"schema": {
-						"$ref": "#/definitions/SafeCreationEstimateV2"
-					}
-				}],
-				"responses": {
-					"201": {
-						"description": "",
-						"schema": {
-							"$ref": "#/definitions/SafeCreationEstimateResponse"
-						}
-					},
-					"400": {
-						"description": "Invalid data"
-					},
-					"422": {
-						"description": "Cannot process data"
-					}
-				},
-				"tags": ["v3"]
-			},
-			"parameters": []
-		}
-	},
-	"definitions": {
-		"GasPrice": {
-			"required": ["lastUpdate", "lowest", "safeLow", "standard", "fast", "fastest"],
-			"type": "object",
-			"properties": {
-				"lastUpdate": {
-					"title": "Last update",
-					"type": "string",
-					"format": "date-time"
-				},
-				"lowest": {
-					"title": "Lowest",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"safeLow": {
-					"title": "Safe low",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"standard": {
-					"title": "Standard",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"fast": {
-					"title": "Fast",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"fastest": {
-					"title": "Fastest",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				}
-			}
-		},
-		"SafeContract": {
-			"required": ["created", "address"],
-			"type": "object",
-			"properties": {
-				"created": {
-					"title": "Created",
-					"type": "string",
-					"format": "date-time"
-				},
-				"address": {
-					"title": "Address",
-					"type": "string"
-				},
-				"tokensWithBalance": {
-					"title": "Tokens with balance",
-					"type": "string",
-					"readOnly": true
-				}
-			}
-		},
-		"SafeResponse": {
-			"required": ["address", "masterCopy", "fallbackHandler", "nonce", "threshold", "owners", "version"],
-			"type": "object",
-			"properties": {
-				"address": {
-					"title": "Address",
-					"type": "string"
-				},
-				"masterCopy": {
-					"title": "Master copy",
-					"type": "string"
-				},
-				"fallbackHandler": {
-					"title": "Fallback handler",
-					"type": "string"
-				},
-				"nonce": {
-					"title": "Nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"threshold": {
-					"title": "Threshold",
-					"type": "integer",
-					"minimum": 1
-				},
-				"owners": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"minItems": 1
-				},
-				"version": {
-					"title": "Version",
-					"type": "string",
-					"minLength": 1
-				}
-			}
-		},
-		"SafeBalanceResponse": {
-			"required": ["tokenAddress", "balance"],
-			"type": "object",
-			"properties": {
-				"tokenAddress": {
-					"title": "Token address",
-					"type": "string",
-					"minLength": 1
-				},
-				"balance": {
-					"title": "Balance",
-					"type": "string",
-					"minLength": 1
-				}
-			}
-		},
-		"EthereumTx": {
-			"title": "Ethereum tx",
-			"required": ["txHash", "to", "data", "gas", "gasPrice", "nonce", "value", "from"],
-			"type": "object",
-			"properties": {
-				"txHash": {
-					"title": "Tx hash",
-					"type": "string"
-				},
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"data": {
-					"title": "Data",
-					"type": "string"
-				},
-				"blockNumber": {
-					"title": "Block number",
-					"type": "string",
-					"readOnly": true
-				},
-				"blockTimestamp": {
-					"title": "Block timestamp",
-					"type": "string",
-					"readOnly": true
-				},
-				"created": {
-					"title": "Created",
-					"type": "string",
-					"format": "date-time",
-					"readOnly": true
-				},
-				"modified": {
-					"title": "Modified",
-					"type": "string",
-					"format": "date-time",
-					"readOnly": true
-				},
-				"gasUsed": {
-					"title": "Gas used",
-					"type": "string",
-					"format": "decimal",
-					"x-nullable": true
-				},
-				"status": {
-					"title": "Status",
-					"type": "integer",
-					"maximum": 2147483647,
-					"minimum": -2147483648,
-					"x-nullable": true
-				},
-				"transactionIndex": {
-					"title": "Transaction index",
-					"type": "integer",
-					"maximum": 2147483647,
-					"minimum": 0,
-					"x-nullable": true
-				},
-				"gas": {
-					"title": "Gas",
-					"type": "string",
-					"format": "decimal"
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "string",
-					"format": "decimal"
-				},
-				"nonce": {
-					"title": "Nonce",
-					"type": "string",
-					"format": "decimal"
-				},
-				"value": {
-					"title": "Value",
-					"type": "string",
-					"format": "decimal"
-				},
-				"from": {
-					"title": "From",
-					"type": "string"
-				}
-			}
-		},
-		"ERC20": {
-			"required": ["ethereumTx", "logIndex", "tokenAddress", "to", "value", "from"],
-			"type": "object",
-			"properties": {
-				"id": {
-					"title": "ID",
-					"type": "integer",
-					"readOnly": true
-				},
-				"ethereumTx": {
-					"$ref": "#/definitions/EthereumTx"
-				},
-				"logIndex": {
-					"title": "Log index",
-					"type": "integer",
-					"minimum": 0
-				},
-				"tokenAddress": {
-					"title": "Token address",
-					"type": "string"
-				},
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"value": {
-					"title": "Value",
-					"type": "string",
-					"minLength": 1
-				},
-				"from": {
-					"title": "From",
-					"type": "string"
-				}
-			}
-		},
-		"ERC721": {
-			"required": ["ethereumTx", "logIndex", "tokenAddress", "to", "tokenId", "from"],
-			"type": "object",
-			"properties": {
-				"id": {
-					"title": "ID",
-					"type": "integer",
-					"readOnly": true
-				},
-				"ethereumTx": {
-					"$ref": "#/definitions/EthereumTx"
-				},
-				"logIndex": {
-					"title": "Log index",
-					"type": "integer",
-					"minimum": 0
-				},
-				"tokenAddress": {
-					"title": "Token address",
-					"type": "string"
-				},
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"tokenId": {
-					"title": "Token id",
-					"type": "string",
-					"minLength": 1
-				},
-				"from": {
-					"title": "From",
-					"type": "string"
-				}
-			}
-		},
-		"SafeFundingResponse": {
-			"type": "object",
-			"properties": {
-				"safeFunded": {
-					"title": "Safe funded",
-					"type": "boolean"
-				},
-				"deployerFunded": {
-					"title": "Deployer funded",
-					"type": "boolean"
-				},
-				"deployerFundedTxHash": {
-					"title": "Deployer funded tx hash",
-					"type": "string",
-					"maxLength": 64,
-					"x-nullable": true
-				},
-				"safeDeployed": {
-					"title": "Safe deployed",
-					"type": "boolean"
-				},
-				"safeDeployedTxHash": {
-					"title": "Safe deployed tx hash",
-					"type": "string",
-					"maxLength": 64,
-					"x-nullable": true
-				}
-			}
-		},
-		"SafeMultisigTxResponse": {
-			"required": ["to", "ethereumTx", "value", "data", "timestamp", "safeTxGas", "dataGas", "gasPrice", "gasToken", "refundReceiver", "nonce", "safeTxHash"],
-			"type": "object",
-			"properties": {
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"ethereumTx": {
-					"$ref": "#/definitions/EthereumTx"
-				},
-				"value": {
-					"title": "Value",
-					"type": "integer",
-					"minimum": 0
-				},
-				"data": {
-					"title": "Data",
-					"type": "string"
-				},
-				"timestamp": {
-					"title": "Timestamp",
-					"type": "string",
-					"format": "date-time"
-				},
-				"operation": {
-					"title": "Operation",
-					"type": "string",
-					"readOnly": true
-				},
-				"safeTxGas": {
-					"title": "Safe tx gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"dataGas": {
-					"title": "Data gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string"
-				},
-				"refundReceiver": {
-					"title": "Refund receiver",
-					"type": "string"
-				},
-				"nonce": {
-					"title": "Nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"safeTxHash": {
-					"title": "Safe tx hash",
-					"type": "string"
-				},
-				"txHash": {
-					"title": "Tx hash",
-					"type": "string",
-					"readOnly": true
-				},
-				"transactionHash": {
-					"title": "Transaction hash",
-					"type": "string",
-					"readOnly": true
-				}
-			}
-		},
-		"SafeSignature": {
-			"required": ["v", "r", "s"],
-			"type": "object",
-			"properties": {
-				"v": {
-					"title": "V",
-					"type": "integer",
-					"minimum": 0
-				},
-				"r": {
-					"title": "R",
-					"type": "integer",
-					"minimum": 0
-				},
-				"s": {
-					"title": "S",
-					"type": "integer",
-					"minimum": 0
-				}
-			}
-		},
-		"SafeRelayMultisigTx": {
-			"required": ["safe", "to", "value", "operation", "safeTxGas", "dataGas", "gasPrice", "nonce", "signatures"],
-			"type": "object",
-			"properties": {
-				"safe": {
-					"title": "Safe",
-					"type": "string"
-				},
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"value": {
-					"title": "Value",
-					"type": "integer",
-					"minimum": 0
-				},
-				"data": {
-					"title": "Data",
-					"type": "string",
-					"x-nullable": true
-				},
-				"operation": {
-					"title": "Operation",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string",
-					"x-nullable": true
-				},
-				"safeTxGas": {
-					"title": "Safe tx gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"dataGas": {
-					"title": "Data gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "integer",
-					"minimum": 0
-				},
-				"refundReceiver": {
-					"title": "Refund receiver",
-					"type": "string",
-					"x-nullable": true
-				},
-				"nonce": {
-					"title": "Nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"signatures": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/SafeSignature"
-					}
-				}
-			}
-		},
-		"SafeMultisigEstimateTx": {
-			"required": ["safe", "to", "value", "operation"],
-			"type": "object",
-			"properties": {
-				"safe": {
-					"title": "Safe",
-					"type": "string"
-				},
-				"to": {
-					"title": "To",
-					"type": "string"
-				},
-				"value": {
-					"title": "Value",
-					"type": "integer",
-					"minimum": 0
-				},
-				"data": {
-					"title": "Data",
-					"type": "string",
-					"x-nullable": true
-				},
-				"operation": {
-					"title": "Operation",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string",
-					"x-nullable": true
-				}
-			}
-		},
-		"SafeMultisigEstimateTxResponse": {
-			"required": ["safeTxGas", "baseGas", "dataGas", "operationalGas", "gasPrice", "lastUsedNonce", "gasToken"],
-			"type": "object",
-			"properties": {
-				"safeTxGas": {
-					"title": "Safe tx gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"baseGas": {
-					"title": "Base gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"dataGas": {
-					"title": "Data gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"operationalGas": {
-					"title": "Operational gas",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "integer",
-					"minimum": 0
-				},
-				"lastUsedNonce": {
-					"title": "Last used nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string"
-				}
-			}
-		},
-		"TransactionGasTokenEstimationResponse": {
-			"required": ["baseGas", "gasPrice", "gasToken"],
-			"type": "object",
-			"properties": {
-				"baseGas": {
-					"title": "Base gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "string",
-					"minLength": 1
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string"
-				}
-			}
-		},
-		"TransactionEstimationWithNonceAndGasTokensResponse": {
-			"required": ["lastUsedNonce", "safeTxGas", "operationalGas", "estimations"],
-			"type": "object",
-			"properties": {
-				"lastUsedNonce": {
-					"title": "Last used nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"safeTxGas": {
-					"title": "Safe tx gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"operationalGas": {
-					"title": "Operational gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"estimations": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/TransactionGasTokenEstimationResponse"
-					}
-				}
-			}
-		},
-		"Token": {
-			"required": ["address", "name", "symbol", "decimals"],
-			"type": "object",
-			"properties": {
-				"address": {
-					"title": "Address",
-					"type": "string",
-					"maxLength": 42,
-					"minLength": 1
-				},
-				"logoUri": {
-					"title": "Logo uri",
-					"type": "string",
-					"readOnly": true
-				},
-				"default": {
-					"title": "Default",
-					"type": "string",
-					"readOnly": true
-				},
-				"name": {
-					"title": "Name",
-					"type": "string",
-					"maxLength": 60,
-					"minLength": 1
-				},
-				"symbol": {
-					"title": "Symbol",
-					"type": "string",
-					"maxLength": 60,
-					"minLength": 1
-				},
-				"description": {
-					"title": "Description",
-					"type": "string"
-				},
-				"decimals": {
-					"title": "Decimals",
-					"type": "integer",
-					"maximum": 32767,
-					"minimum": 0
-				},
-				"websiteUri": {
-					"title": "Website uri",
-					"type": "string",
-					"format": "uri",
-					"maxLength": 200
-				},
-				"gas": {
-					"title": "Gas",
-					"type": "boolean"
-				}
-			}
-		},
-		"SafeCreation2": {
-			"required": ["saltNonce", "owners", "threshold"],
-			"type": "object",
-			"properties": {
-				"saltNonce": {
-					"title": "Salt nonce",
-					"type": "integer",
-					"maximum": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
-					"minimum": 0
-				},
-				"owners": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"minItems": 1
-				},
-				"threshold": {
-					"title": "Threshold",
-					"type": "integer",
-					"minimum": 1
-				},
-				"paymentToken": {
-					"title": "Payment token",
-					"type": "string",
-					"x-nullable": true
-				}
-			}
-		},
-		"SafeCreation2Response": {
-			"required": ["safe", "masterCopy", "proxyFactory", "paymentToken", "payment", "paymentReceiver", "setupData", "gasEstimated", "gasPriceEstimated"],
-			"type": "object",
-			"properties": {
-				"safe": {
-					"title": "Safe",
-					"type": "string"
-				},
-				"masterCopy": {
-					"title": "Master copy",
-					"type": "string"
-				},
-				"proxyFactory": {
-					"title": "Proxy factory",
-					"type": "string"
-				},
-				"paymentToken": {
-					"title": "Payment token",
-					"type": "string"
-				},
-				"payment": {
-					"title": "Payment",
-					"type": "string",
-					"minLength": 1
-				},
-				"paymentReceiver": {
-					"title": "Payment receiver",
-					"type": "string"
-				},
-				"setupData": {
-					"title": "Setup data",
-					"type": "string"
-				},
-				"gasEstimated": {
-					"title": "Gas estimated",
-					"type": "string",
-					"minLength": 1
-				},
-				"gasPriceEstimated": {
-					"title": "Gas price estimated",
-					"type": "string",
-					"minLength": 1
-				}
-			}
-		},
-		"SafeCreationEstimateV2": {
-			"required": ["numberOwners"],
-			"type": "object",
-			"properties": {
-				"numberOwners": {
-					"title": "Number owners",
-					"type": "integer",
-					"minimum": 1
-				}
-			}
-		},
-		"SafeCreationEstimateResponse": {
-			"required": ["gas", "gasPrice", "payment", "paymentToken"],
-			"type": "object",
-			"properties": {
-				"gas": {
-					"title": "Gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "string",
-					"minLength": 1
-				},
-				"payment": {
-					"title": "Payment",
-					"type": "string",
-					"minLength": 1
-				},
-				"paymentToken": {
-					"title": "Payment token",
-					"type": "string"
-				}
-			}
-		},
-		"SafeFunding2Response": {
-			"required": ["blockNumber", "txHash"],
-			"type": "object",
-			"properties": {
-				"blockNumber": {
-					"title": "Block number",
-					"type": "string",
-					"minLength": 1
-				},
-				"txHash": {
-					"title": "Tx hash",
-					"type": "string"
-				}
-			}
-		},
-		"SafeMultisigEstimateTxResponseV2": {
-			"required": ["safeTxGas", "baseGas", "dataGas", "operationalGas", "gasPrice", "lastUsedNonce", "gasToken", "refundReceiver"],
-			"type": "object",
-			"properties": {
-				"safeTxGas": {
-					"title": "Safe tx gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"baseGas": {
-					"title": "Base gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"dataGas": {
-					"title": "Data gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"operationalGas": {
-					"title": "Operational gas",
-					"type": "string",
-					"minLength": 1
-				},
-				"gasPrice": {
-					"title": "Gas price",
-					"type": "string",
-					"minLength": 1
-				},
-				"lastUsedNonce": {
-					"title": "Last used nonce",
-					"type": "integer",
-					"minimum": 0
-				},
-				"gasToken": {
-					"title": "Gas token",
-					"type": "string"
-				},
-				"refundReceiver": {
-					"title": "Refund receiver",
-					"type": "string"
-				}
-			}
-		}
-	}
+  "swagger": "2.0",
+  "info": {
+    "title": "Gnosis Safe Relay API",
+    "description": "API to manage creation of safes and multisig transaction sending",
+    "contact": {
+      "email": "uxio@gnosis.pm"
+    },
+    "license": {
+      "name": "MIT License"
+    },
+    "version": "v1"
+  },
+  "host": "safe-relay.gnosis.io",
+  "schemes": ["https"],
+  "basePath": "/api",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "Basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "Basic": []
+    }
+  ],
+  "paths": {
+    "/v1/about/": {
+      "get": {
+        "operationId": "v1_about_list",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/gas-station/": {
+      "get": {
+        "operationId": "v1_gas-station_list",
+        "description": "Gets current gas prices for the ethereum network (using last 200 blocks)\n`Lowest` and `fastest` are the lower and the higher gas prices found in those blocks\nThe rest are percentiles on all the gas prices in the last blocks.\n`safe_low=percentile 30`, `standard=percentile 50` and `fast=percentile 75`",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GasPrice"
+            }
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/gas-station/history/": {
+      "get": {
+        "operationId": "v1_gas-station_history_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats from. If not set, 1 month before now",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats to. If not set, now",
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/GasPrice"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/private/api-token-auth/": {
+      "post": {
+        "operationId": "v1_private_api-token-auth_create",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/private/safes/": {
+      "get": {
+        "operationId": "v1_private_safes_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SafeContract"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/safes/{address}/": {
+      "get": {
+        "operationId": "v1_safes_read",
+        "description": "Get status of the safe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeResponse"
+            }
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/balances/": {
+      "get": {
+        "operationId": "v1_safes_balances_list",
+        "description": "Get status of the safe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SafeBalanceResponse"
+              }
+            }
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/erc20-transactions/": {
+      "get": {
+        "operationId": "v1_safes_erc20-transactions_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ERC20"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found/No data for that Safe"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/erc721-transactions/": {
+      "get": {
+        "operationId": "v1_safes_erc721-transactions_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ERC721"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found/No data for that Safe"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/funded/": {
+      "get": {
+        "operationId": "v1_safes_funded_list",
+        "description": "Get status of the safe creation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeFundingResponse"
+            }
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "put": {
+        "operationId": "v1_safes_funded_update",
+        "description": "Force check of a safe balance to start the safe creation",
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "Task was queued"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/transactions/": {
+      "get": {
+        "operationId": "v1_safes_transactions_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "to",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "value__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "value__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "safe_tx_gas__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "safe_tx_gas__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "safe_tx_gas",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "data_gas__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "data_gas__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "data_gas",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "gas_price__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "gas_price__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "gas_price",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "nonce__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "nonce__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "nonce",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "gas_token",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "safe_tx_hash",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ethereum_tx__tx_hash",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SafeMultisigTxResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found/No data for that Safe"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "post": {
+        "operationId": "v1_safes_transactions_create",
+        "description": "Send a Safe Multisig Transaction",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeRelayMultisigTx"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigTxResponse"
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid/Tx not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/transactions/estimate/": {
+      "post": {
+        "operationId": "v1_safes_transactions_estimate_create",
+        "description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigEstimateTx"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigEstimateTxResponse"
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid/Tx not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/safes/{address}/transactions/estimates/": {
+      "post": {
+        "operationId": "v1_safes_transactions_estimates_create",
+        "description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigEstimateTx"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/TransactionEstimationWithNonceAndGasTokensResponse"
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid/Tx not valid"
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v1/stats/": {
+      "get": {
+        "operationId": "v1_stats_list",
+        "description": "Get stats of the Safe Relay Service",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats from. If not set, 2018-11-01",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats to. If not set, now",
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/stats/history/": {
+      "get": {
+        "operationId": "v1_stats_history_list",
+        "description": "Get historic stats of the Safe Relay Service",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats from. If not set, 2018-11-01",
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "description": "ISO 8601 date to filter stats to. If not set, now",
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/tokens/": {
+      "get": {
+        "operationId": "v1_tokens_list",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "gas",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "decimals__lt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "decimals__gt",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "decimals",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "default",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The initial index from which to return the results.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["count", "results"],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Token"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": []
+    },
+    "/v1/tokens/{address}/": {
+      "get": {
+        "operationId": "v1_tokens_read",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Token"
+            }
+          }
+        },
+        "tags": ["v1"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "description": "A unique value identifying this token.",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v2/safes/": {
+      "post": {
+        "operationId": "v2_safes_create",
+        "description": "Begins creation of a Gnosis Safe V1.0.0",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeCreation2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeCreation2Response"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "422": {
+            "description": "Cannot process data"
+          }
+        },
+        "tags": ["v2"]
+      },
+      "parameters": []
+    },
+    "/v2/safes/estimates/": {
+      "post": {
+        "operationId": "v2_safes_estimates_create",
+        "description": "Estimates creation of a Safe",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeCreationEstimateV2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeCreationEstimateResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "422": {
+            "description": "Cannot process data"
+          }
+        },
+        "tags": ["v2"]
+      },
+      "parameters": []
+    },
+    "/v2/safes/{address}/funded/": {
+      "get": {
+        "operationId": "v2_safes_funded_list",
+        "description": "Get status of the safe creation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeFunding2Response"
+            }
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v2"]
+      },
+      "put": {
+        "operationId": "v2_safes_funded_update",
+        "description": "Force check of a safe balance to start the safe creation",
+        "parameters": [],
+        "responses": {
+          "202": {
+            "description": "Task was queued"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid"
+          }
+        },
+        "tags": ["v2"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v2/safes/{address}/transactions/estimate/": {
+      "post": {
+        "operationId": "v2_safes_transactions_estimate_create",
+        "description": "Estimates a Safe Multisig Transaction. `operational_gas` and `data_gas` are deprecated, use `base_gas` instead",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigEstimateTx"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeMultisigEstimateTxResponseV2"
+            }
+          },
+          "400": {
+            "description": "Data not valid"
+          },
+          "404": {
+            "description": "Safe not found"
+          },
+          "422": {
+            "description": "Safe address checksum not valid/Tx not valid"
+          }
+        },
+        "tags": ["v2"]
+      },
+      "parameters": [
+        {
+          "name": "address",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/v3/safes/": {
+      "post": {
+        "operationId": "v3_safes_create",
+        "description": "Begins creation of a Gnosis Safe in its last version (v1.1.1)",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeCreation2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeCreation2Response"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "422": {
+            "description": "Cannot process data"
+          }
+        },
+        "tags": ["v3"]
+      },
+      "parameters": []
+    },
+    "/v3/safes/estimates/": {
+      "post": {
+        "operationId": "v3_safes_estimates_create",
+        "description": "Estimates creation of a Safe",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SafeCreationEstimateV2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/SafeCreationEstimateResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "422": {
+            "description": "Cannot process data"
+          }
+        },
+        "tags": ["v3"]
+      },
+      "parameters": []
+    }
+  },
+  "definitions": {
+    "GasPrice": {
+      "required": [
+        "lastUpdate",
+        "lowest",
+        "safeLow",
+        "standard",
+        "fast",
+        "fastest"
+      ],
+      "type": "object",
+      "properties": {
+        "lastUpdate": {
+          "title": "Last update",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lowest": {
+          "title": "Lowest",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "safeLow": {
+          "title": "Safe low",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "standard": {
+          "title": "Standard",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "fast": {
+          "title": "Fast",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "fastest": {
+          "title": "Fastest",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        }
+      }
+    },
+    "SafeContract": {
+      "required": ["created", "address"],
+      "type": "object",
+      "properties": {
+        "created": {
+          "title": "Created",
+          "type": "string",
+          "format": "date-time"
+        },
+        "address": {
+          "title": "Address",
+          "type": "string"
+        },
+        "tokensWithBalance": {
+          "title": "Tokens with balance",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "SafeResponse": {
+      "required": [
+        "address",
+        "masterCopy",
+        "fallbackHandler",
+        "nonce",
+        "threshold",
+        "owners",
+        "version"
+      ],
+      "type": "object",
+      "properties": {
+        "address": {
+          "title": "Address",
+          "type": "string"
+        },
+        "masterCopy": {
+          "title": "Master copy",
+          "type": "string"
+        },
+        "fallbackHandler": {
+          "title": "Fallback handler",
+          "type": "string"
+        },
+        "nonce": {
+          "title": "Nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "threshold": {
+          "title": "Threshold",
+          "type": "integer",
+          "minimum": 1
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "version": {
+          "title": "Version",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "SafeBalanceResponse": {
+      "required": ["tokenAddress", "balance"],
+      "type": "object",
+      "properties": {
+        "tokenAddress": {
+          "title": "Token address",
+          "type": "string",
+          "minLength": 1
+        },
+        "balance": {
+          "title": "Balance",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "EthereumTx": {
+      "title": "Ethereum tx",
+      "required": [
+        "txHash",
+        "to",
+        "data",
+        "gas",
+        "gasPrice",
+        "nonce",
+        "value",
+        "from"
+      ],
+      "type": "object",
+      "properties": {
+        "txHash": {
+          "title": "Tx hash",
+          "type": "string"
+        },
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "data": {
+          "title": "Data",
+          "type": "string"
+        },
+        "blockNumber": {
+          "title": "Block number",
+          "type": "string",
+          "readOnly": true
+        },
+        "blockTimestamp": {
+          "title": "Block timestamp",
+          "type": "string",
+          "readOnly": true
+        },
+        "created": {
+          "title": "Created",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "gasUsed": {
+          "title": "Gas used",
+          "type": "string",
+          "format": "decimal",
+          "x-nullable": true
+        },
+        "status": {
+          "title": "Status",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "x-nullable": true
+        },
+        "transactionIndex": {
+          "title": "Transaction index",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": 0,
+          "x-nullable": true
+        },
+        "gas": {
+          "title": "Gas",
+          "type": "string",
+          "format": "decimal"
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "string",
+          "format": "decimal"
+        },
+        "nonce": {
+          "title": "Nonce",
+          "type": "string",
+          "format": "decimal"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string",
+          "format": "decimal"
+        },
+        "from": {
+          "title": "From",
+          "type": "string"
+        }
+      }
+    },
+    "ERC20": {
+      "required": [
+        "ethereumTx",
+        "logIndex",
+        "tokenAddress",
+        "to",
+        "value",
+        "from"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "ethereumTx": {
+          "$ref": "#/definitions/EthereumTx"
+        },
+        "logIndex": {
+          "title": "Log index",
+          "type": "integer",
+          "minimum": 0
+        },
+        "tokenAddress": {
+          "title": "Token address",
+          "type": "string"
+        },
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string",
+          "minLength": 1
+        },
+        "from": {
+          "title": "From",
+          "type": "string"
+        }
+      }
+    },
+    "ERC721": {
+      "required": [
+        "ethereumTx",
+        "logIndex",
+        "tokenAddress",
+        "to",
+        "tokenId",
+        "from"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "ID",
+          "type": "integer",
+          "readOnly": true
+        },
+        "ethereumTx": {
+          "$ref": "#/definitions/EthereumTx"
+        },
+        "logIndex": {
+          "title": "Log index",
+          "type": "integer",
+          "minimum": 0
+        },
+        "tokenAddress": {
+          "title": "Token address",
+          "type": "string"
+        },
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "tokenId": {
+          "title": "Token id",
+          "type": "string",
+          "minLength": 1
+        },
+        "from": {
+          "title": "From",
+          "type": "string"
+        }
+      }
+    },
+    "SafeFundingResponse": {
+      "type": "object",
+      "properties": {
+        "safeFunded": {
+          "title": "Safe funded",
+          "type": "boolean"
+        },
+        "deployerFunded": {
+          "title": "Deployer funded",
+          "type": "boolean"
+        },
+        "deployerFundedTxHash": {
+          "title": "Deployer funded tx hash",
+          "type": "string",
+          "maxLength": 64,
+          "x-nullable": true
+        },
+        "safeDeployed": {
+          "title": "Safe deployed",
+          "type": "boolean"
+        },
+        "safeDeployedTxHash": {
+          "title": "Safe deployed tx hash",
+          "type": "string",
+          "maxLength": 64,
+          "x-nullable": true
+        }
+      }
+    },
+    "SafeMultisigTxResponse": {
+      "required": [
+        "to",
+        "ethereumTx",
+        "value",
+        "data",
+        "timestamp",
+        "safeTxGas",
+        "dataGas",
+        "gasPrice",
+        "gasToken",
+        "refundReceiver",
+        "nonce",
+        "safeTxHash"
+      ],
+      "type": "object",
+      "properties": {
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "ethereumTx": {
+          "$ref": "#/definitions/EthereumTx"
+        },
+        "value": {
+          "title": "Value",
+          "type": "integer",
+          "minimum": 0
+        },
+        "data": {
+          "title": "Data",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string",
+          "format": "date-time"
+        },
+        "operation": {
+          "title": "Operation",
+          "type": "string",
+          "readOnly": true
+        },
+        "safeTxGas": {
+          "title": "Safe tx gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "dataGas": {
+          "title": "Data gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string"
+        },
+        "refundReceiver": {
+          "title": "Refund receiver",
+          "type": "string"
+        },
+        "nonce": {
+          "title": "Nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "safeTxHash": {
+          "title": "Safe tx hash",
+          "type": "string"
+        },
+        "txHash": {
+          "title": "Tx hash",
+          "type": "string",
+          "readOnly": true
+        },
+        "transactionHash": {
+          "title": "Transaction hash",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "SafeSignature": {
+      "required": ["v", "r", "s"],
+      "type": "object",
+      "properties": {
+        "v": {
+          "title": "V",
+          "type": "integer",
+          "minimum": 0
+        },
+        "r": {
+          "title": "R",
+          "type": "integer",
+          "minimum": 0
+        },
+        "s": {
+          "title": "S",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "SafeRelayMultisigTx": {
+      "required": [
+        "safe",
+        "to",
+        "value",
+        "operation",
+        "safeTxGas",
+        "dataGas",
+        "gasPrice",
+        "nonce",
+        "signatures"
+      ],
+      "type": "object",
+      "properties": {
+        "safe": {
+          "title": "Safe",
+          "type": "string"
+        },
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "integer",
+          "minimum": 0
+        },
+        "data": {
+          "title": "Data",
+          "type": "string",
+          "x-nullable": true
+        },
+        "operation": {
+          "title": "Operation",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string",
+          "x-nullable": true
+        },
+        "safeTxGas": {
+          "title": "Safe tx gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "dataGas": {
+          "title": "Data gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "integer",
+          "minimum": 0
+        },
+        "refundReceiver": {
+          "title": "Refund receiver",
+          "type": "string",
+          "x-nullable": true
+        },
+        "nonce": {
+          "title": "Nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "signatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SafeSignature"
+          }
+        }
+      }
+    },
+    "SafeMultisigEstimateTx": {
+      "required": ["safe", "to", "value", "operation"],
+      "type": "object",
+      "properties": {
+        "safe": {
+          "title": "Safe",
+          "type": "string"
+        },
+        "to": {
+          "title": "To",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "integer",
+          "minimum": 0
+        },
+        "data": {
+          "title": "Data",
+          "type": "string",
+          "x-nullable": true
+        },
+        "operation": {
+          "title": "Operation",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
+    "SafeMultisigEstimateTxResponse": {
+      "required": [
+        "safeTxGas",
+        "baseGas",
+        "dataGas",
+        "operationalGas",
+        "gasPrice",
+        "lastUsedNonce",
+        "gasToken"
+      ],
+      "type": "object",
+      "properties": {
+        "safeTxGas": {
+          "title": "Safe tx gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "baseGas": {
+          "title": "Base gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "dataGas": {
+          "title": "Data gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "operationalGas": {
+          "title": "Operational gas",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "integer",
+          "minimum": 0
+        },
+        "lastUsedNonce": {
+          "title": "Last used nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string"
+        }
+      }
+    },
+    "TransactionGasTokenEstimationResponse": {
+      "required": ["baseGas", "gasPrice", "gasToken"],
+      "type": "object",
+      "properties": {
+        "baseGas": {
+          "title": "Base gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "string",
+          "minLength": 1
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string"
+        }
+      }
+    },
+    "TransactionEstimationWithNonceAndGasTokensResponse": {
+      "required": [
+        "lastUsedNonce",
+        "safeTxGas",
+        "operationalGas",
+        "estimations"
+      ],
+      "type": "object",
+      "properties": {
+        "lastUsedNonce": {
+          "title": "Last used nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "safeTxGas": {
+          "title": "Safe tx gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "operationalGas": {
+          "title": "Operational gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "estimations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransactionGasTokenEstimationResponse"
+          }
+        }
+      }
+    },
+    "Token": {
+      "required": ["address", "name", "symbol", "decimals"],
+      "type": "object",
+      "properties": {
+        "address": {
+          "title": "Address",
+          "type": "string",
+          "maxLength": 42,
+          "minLength": 1
+        },
+        "logoUri": {
+          "title": "Logo uri",
+          "type": "string",
+          "readOnly": true
+        },
+        "default": {
+          "title": "Default",
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 1
+        },
+        "symbol": {
+          "title": "Symbol",
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 1
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "decimals": {
+          "title": "Decimals",
+          "type": "integer",
+          "maximum": 32767,
+          "minimum": 0
+        },
+        "websiteUri": {
+          "title": "Website uri",
+          "type": "string",
+          "format": "uri",
+          "maxLength": 200
+        },
+        "gas": {
+          "title": "Gas",
+          "type": "boolean"
+        }
+      }
+    },
+    "SafeCreation2": {
+      "required": ["saltNonce", "owners", "threshold"],
+      "type": "object",
+      "properties": {
+        "saltNonce": {
+          "title": "Salt nonce",
+          "type": "integer",
+          "maximum": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
+          "minimum": 0
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "threshold": {
+          "title": "Threshold",
+          "type": "integer",
+          "minimum": 1
+        },
+        "paymentToken": {
+          "title": "Payment token",
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
+    "SafeCreation2Response": {
+      "required": [
+        "safe",
+        "masterCopy",
+        "proxyFactory",
+        "paymentToken",
+        "payment",
+        "paymentReceiver",
+        "setupData",
+        "gasEstimated",
+        "gasPriceEstimated"
+      ],
+      "type": "object",
+      "properties": {
+        "safe": {
+          "title": "Safe",
+          "type": "string"
+        },
+        "masterCopy": {
+          "title": "Master copy",
+          "type": "string"
+        },
+        "proxyFactory": {
+          "title": "Proxy factory",
+          "type": "string"
+        },
+        "paymentToken": {
+          "title": "Payment token",
+          "type": "string"
+        },
+        "payment": {
+          "title": "Payment",
+          "type": "string",
+          "minLength": 1
+        },
+        "paymentReceiver": {
+          "title": "Payment receiver",
+          "type": "string"
+        },
+        "setupData": {
+          "title": "Setup data",
+          "type": "string"
+        },
+        "gasEstimated": {
+          "title": "Gas estimated",
+          "type": "string",
+          "minLength": 1
+        },
+        "gasPriceEstimated": {
+          "title": "Gas price estimated",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "SafeCreationEstimateV2": {
+      "required": ["numberOwners"],
+      "type": "object",
+      "properties": {
+        "numberOwners": {
+          "title": "Number owners",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "SafeCreationEstimateResponse": {
+      "required": ["gas", "gasPrice", "payment", "paymentToken"],
+      "type": "object",
+      "properties": {
+        "gas": {
+          "title": "Gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "string",
+          "minLength": 1
+        },
+        "payment": {
+          "title": "Payment",
+          "type": "string",
+          "minLength": 1
+        },
+        "paymentToken": {
+          "title": "Payment token",
+          "type": "string"
+        }
+      }
+    },
+    "SafeFunding2Response": {
+      "required": ["blockNumber", "txHash"],
+      "type": "object",
+      "properties": {
+        "blockNumber": {
+          "title": "Block number",
+          "type": "string",
+          "minLength": 1
+        },
+        "txHash": {
+          "title": "Tx hash",
+          "type": "string"
+        }
+      }
+    },
+    "SafeMultisigEstimateTxResponseV2": {
+      "required": [
+        "safeTxGas",
+        "baseGas",
+        "dataGas",
+        "operationalGas",
+        "gasPrice",
+        "lastUsedNonce",
+        "gasToken",
+        "refundReceiver"
+      ],
+      "type": "object",
+      "properties": {
+        "safeTxGas": {
+          "title": "Safe tx gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "baseGas": {
+          "title": "Base gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "dataGas": {
+          "title": "Data gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "operationalGas": {
+          "title": "Operational gas",
+          "type": "string",
+          "minLength": 1
+        },
+        "gasPrice": {
+          "title": "Gas price",
+          "type": "string",
+          "minLength": 1
+        },
+        "lastUsedNonce": {
+          "title": "Last used nonce",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gasToken": {
+          "title": "Gas token",
+          "type": "string"
+        },
+        "refundReceiver": {
+          "title": "Refund receiver",
+          "type": "string"
+        }
+      }
+    }
+  }
 }

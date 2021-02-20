@@ -1,4 +1,3 @@
 ## arrcherdao
 
-> API Specification 
-
+> API Specification

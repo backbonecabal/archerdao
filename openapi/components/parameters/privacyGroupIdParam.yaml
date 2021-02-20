@@ -1,4 +1,4 @@
-description: 'Private transaction group ID (header: x-manifold-privacyGroupId)'
+description: "Private transaction group ID (header: x-manifold-privacyGroupId)"
 name: fold-privacygroupid
 in: query
 schema:

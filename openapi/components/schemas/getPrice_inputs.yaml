@@ -1,10 +1,10 @@
 type: object
 properties:
   contractAddress:
-    description: 'address: contract to query'
+    description: "address: contract to query"
     type: string
-    pattern: '^(0x)?[a-fA-F0-9]{40}$'
+    pattern: "^(0x)?[a-fA-F0-9]{40}$"
   data:
-    description: 'bytes: the bytecode for the contract call'
+    description: "bytes: the bytecode for the contract call"
     type: string
-    pattern: '^(0x)?[a-fA-F0-9]+$'
+    pattern: "^(0x)?[a-fA-F0-9]+$"

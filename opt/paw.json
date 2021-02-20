@@ -5,9 +5,7 @@
     "version": "v0.0.0"
   },
   "host": "127.0.0.1:8545",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "basePath": "/",
   "paths": {
     "/": {
@@ -15,9 +13,7 @@
         "summary": "miner_stop",
         "description": "",
         "operationId": "35b15a68-b230-4156-a0d5-763f2aa1ac27",
-        "consumes": [
-          "text/plain"
-        ],
+        "consumes": ["text/plain"],
         "parameters": [
           {
             "required": false,

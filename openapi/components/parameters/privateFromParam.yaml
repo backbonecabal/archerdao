@@ -1,4 +1,4 @@
-description: 'Private transaction sender (header: x-manifold-privatefrom)'
+description: "Private transaction sender (header: x-manifold-privatefrom)"
 name: fold-privatefrom
 in: query
 schema:

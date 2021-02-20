@@ -1,5 +1,5 @@
 get:
-  summary: 'query(bytes,uint256[]) [read only]'
+  summary: "query(bytes,uint256[]) [read only]"
   operationId: query_get
   parameters:
     - description: The contract address
@@ -24,25 +24,25 @@ get:
       required: true
       schema:
         type: string
-    - $ref: '#/components/parameters/fromParam'
-    - $ref: '#/components/parameters/valueParam'
-    - $ref: '#/components/parameters/gasParam'
-    - $ref: '#/components/parameters/gaspriceParam'
+    - $ref: "#/components/parameters/fromParam"
+    - $ref: "#/components/parameters/valueParam"
+    - $ref: "#/components/parameters/gasParam"
+    - $ref: "#/components/parameters/gaspriceParam"
   responses:
-    '200':
+    "200":
       description: successful response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/query_outputs'
+            $ref: "#/components/schemas/query_outputs"
     default:
       description: error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: "#/components/schemas/error"
 post:
-  summary: 'query(bytes,uint256[]) [read only]'
+  summary: "query(bytes,uint256[]) [read only]"
   operationId: query_post
   parameters:
     - description: The contract address
@@ -51,34 +51,34 @@ post:
       required: true
       schema:
         type: string
-    - $ref: '#/components/parameters/fromParam'
-    - $ref: '#/components/parameters/valueParam'
-    - $ref: '#/components/parameters/gasParam'
-    - $ref: '#/components/parameters/gaspriceParam'
-    - $ref: '#/components/parameters/syncParam'
-    - $ref: '#/components/parameters/callParam'
-    - $ref: '#/components/parameters/privateFromParam'
-    - $ref: '#/components/parameters/privateForParam'
-    - $ref: '#/components/parameters/blocknumberParam'
+    - $ref: "#/components/parameters/fromParam"
+    - $ref: "#/components/parameters/valueParam"
+    - $ref: "#/components/parameters/gasParam"
+    - $ref: "#/components/parameters/gaspriceParam"
+    - $ref: "#/components/parameters/syncParam"
+    - $ref: "#/components/parameters/callParam"
+    - $ref: "#/components/parameters/privateFromParam"
+    - $ref: "#/components/parameters/privateForParam"
+    - $ref: "#/components/parameters/blocknumberParam"
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/query_inputs'
+          $ref: "#/components/schemas/query_inputs"
       application/x-yaml:
         schema:
-          $ref: '#/components/schemas/query_inputs'
+          $ref: "#/components/schemas/query_inputs"
     required: true
   responses:
-    '200':
+    "200":
       description: successful response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/query_outputs'
+            $ref: "#/components/schemas/query_outputs"
     default:
       description: error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: "#/components/schemas/error"

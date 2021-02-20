@@ -1,4 +1,4 @@
-description: 'Gas Price offered (header: x-manifold-gasprice)'
+description: "Gas Price offered (header: x-manifold-gasprice)"
 name: fold-gasprice
 in: query
 allowEmptyValue: true

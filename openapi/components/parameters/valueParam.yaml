@@ -1,4 +1,4 @@
-description: 'Ether value to send with the transaction (header: x-manifold-ethvalue)'
+description: "Ether value to send with the transaction (header: x-manifold-ethvalue)"
 name: fold-ethvalue
 in: query
 allowEmptyValue: true

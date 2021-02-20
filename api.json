@@ -1,403 +1,435 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"title": "ArcherDAO Swagger 2.0 API",
-		"description": "API to manage creation of ArcherDAO Transactions",
-		"contact": {
-			"email": "ops@manifoldfinance.com"
-		},
-		"license": {
-			"name": "MIT License"
-		},
-		"version": "v1"
-	},
-	"host": "relay.backbonecabal.net",
-	"schemes": ["https"],
-	"basePath": "/api",
-	"consumes": ["application/json"],
-	"produces": ["application/json"],
-	"securityDefinitions": {
-		"Basic": {
-			"type": "basic"
-		}
-	},
-	"security": [{
-		"Basic": []
-	}],
-	"paths": {
-		"/v1/eth/": {
-			"get": {
-				"summary": "Request",
-				"description": "",
-				"operationId": "046aae7f-1487-4768-83ca-0d7b70d345e5",
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			}
-		},
-		"/v1/eth/getPrice": {
-			"get": {
-				"summary": "getPrice(address,bytes) [read only]",
-				"description": "",
-				"operationId": "94e6c030-30cc-4754-a635-9a8f1ddfc17d",
-				"parameters": [{
-						"type": "string",
-						"default": "",
-						"name": "contractAddress",
-						"description": "address: contract to query",
-						"required": true,
-						"in": "query"
-					},
-					{
-						"type": "string",
-						"default": "",
-						"name": "data",
-						"description": "bytes: the bytecode for the contract call",
-						"required": true,
-						"in": "query"
-					}
-				],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			},
-			"post": {
-				"summary": "getPrice(address,bytes) [read only]",
-				"description": "",
-				"operationId": "ffd828ca-5d47-4309-9d66-dc08c8b02904",
-				"consumes": [
-					"application/json",
-					"application/x-yaml"
-				],
-				"parameters": [{
-					"required": false,
-					"schema": {
-						"type": "string",
-						"default": ""
-					},
-					"in": "body",
-					"name": "body"
-				}],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			}
-		},
-		"/v1/eth/query": {
-			"get": {
-				"summary": "query(bytes,uint256[]) [read only]",
-				"description": "",
-				"operationId": "8d380d9c-a9ce-4df8-86c3-dbd4848ed96a",
-				"parameters": [{
-						"type": "string",
-						"default": "",
-						"name": "script",
-						"description": "bytes: the compiled bytecode for the series of function calls to get the final price",
-						"required": true,
-						"in": "query"
-					},
-					{
-						"type": "string",
-						"default": "",
-						"name": "inputLocations",
-						"description": "uint256[]: index locations within the script to insert input amounts dynamically",
-						"required": true,
-						"in": "query"
-					}
-				],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			},
-			"post": {
-				"summary": "query(bytes,uint256[]) [read only]",
-				"description": "",
-				"operationId": "d97f343f-de08-454c-bc4e-32afd1cfb3d2",
-				"consumes": [
-					"application/json",
-					"application/x-yaml"
-				],
-				"parameters": [{
-					"required": false,
-					"schema": {
-						"type": "string",
-						"default": ""
-					},
-					"in": "body",
-					"name": "body"
-				}],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			}
-		},
-		"/v1/eth/queryAllPrices": {
-			"get": {
-				"summary": "queryAllPrices(bytes,uint256[]) [read only]",
-				"description": "",
-				"operationId": "e4da08d3-aae2-48de-9f9d-cd7041af81b4",
-				"parameters": [{
-						"type": "string",
-						"default": "",
-						"name": "script",
-						"description": "bytes: the compiled bytecode for the series of function calls to get the final price",
-						"required": true,
-						"in": "query"
-					},
-					{
-						"type": "string",
-						"default": "",
-						"name": "inputLocations",
-						"description": "uint256[]: index locations within the script to insert input amounts dynamically",
-						"required": true,
-						"in": "query"
-					}
-				],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			},
-			"post": {
-				"summary": "queryAllPrices(bytes,uint256[]) [read only]",
-				"description": "",
-				"operationId": "1939a673-a9c4-4507-83b4-87f7a56c8838",
-				"consumes": [
-					"application/json",
-					"application/x-yaml"
-				],
-				"parameters": [{
-					"required": false,
-					"schema": {
-						"type": "string",
-						"default": ""
-					},
-					"in": "body",
-					"name": "body"
-				}],
-				"responses": {
-					"default": {
-						"description": "no response description was provided for this operation"
-					}
-				}
-			}
-		}
-	},
-	"responses": {
-		"code": {
-			"description": ""
-		}
-	},
-	"definitions": {
-		"GasPrice": {
-			"required": ["lastUpdate", "lowest", "safeLow", "standard", "fast", "fastest"],
-			"type": "object",
-			"properties": {
-				"lastUpdate": {
-					"title": "Last update",
-					"type": "string",
-					"format": "date-time"
-				},
-				"lowest": {
-					"title": "Lowest",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"safeLow": {
-					"title": "Safe low",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"standard": {
-					"title": "Standard",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"fast": {
-					"title": "Fast",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1
-				},
-				"fastest": {
-					"title": "Fastest",
-					"type": "string",
-					"maxLength": 20,
-					"minLength": 1,
-					"EthereumTx": {
-						"title": "Ethereum tx",
-						"required": ["txHash", "to", "data", "gas", "gasPrice", "nonce", "value", "from"],
-						"type": "object",
-						"properties": {
-							"txHash": {
-								"title": "Tx hash",
-								"type": "string"
-							},
-							"to": {
-								"title": "To",
-								"type": "string"
-							},
-							"data": {
-								"title": "Data",
-								"type": "string"
-							},
-							"blockNumber": {
-								"title": "Block number",
-								"type": "string",
-								"readOnly": true
-							},
-							"blockTimestamp": {
-								"title": "Block timestamp",
-								"type": "string",
-								"readOnly": true
-							},
-							"created": {
-								"title": "Created",
-								"type": "string",
-								"format": "date-time",
-								"readOnly": true
-							},
-							"modified": {
-								"title": "Modified",
-								"type": "string",
-								"format": "date-time",
-								"readOnly": true
-							},
-							"gasUsed": {
-								"title": "Gas used",
-								"type": "string",
-								"format": "decimal",
-								"x-nullable": true
-							},
-							"status": {
-								"title": "Status",
-								"type": "integer",
-								"maximum": 2147483647,
-								"minimum": -2147483648,
-								"x-nullable": true
-							},
-							"transactionIndex": {
-								"title": "Transaction index",
-								"type": "integer",
-								"maximum": 2147483647,
-								"minimum": 0,
-								"x-nullable": true
-							},
-							"gas": {
-								"title": "Gas",
-								"type": "string",
-								"format": "decimal"
-							},
-							"gasPrice": {
-								"title": "Gas price",
-								"type": "string",
-								"format": "decimal"
-							},
-							"nonce": {
-								"title": "Nonce",
-								"type": "string",
-								"format": "decimal"
-							},
-							"value": {
-								"title": "Value",
-								"type": "string",
-								"format": "decimal"
-							},
-							"from": {
-								"title": "From",
-								"type": "string"
-							}
-						}
-					},
-					"ERC20": {
-						"required": ["ethereumTx", "logIndex", "tokenAddress", "to", "value", "from"],
-						"type": "object",
-						"properties": {
-							"id": {
-								"title": "ID",
-								"type": "integer",
-								"readOnly": true
-							},
-							"ethereumTx": {
-								"$ref": "#/definitions/EthereumTx"
-							},
-							"logIndex": {
-								"title": "Log index",
-								"type": "integer",
-								"minimum": 0
-							},
-							"tokenAddress": {
-								"title": "Token address",
-								"type": "string"
-							},
-							"to": {
-								"title": "To",
-								"type": "string"
-							},
-							"value": {
-								"title": "Value",
-								"type": "string",
-								"minLength": 1
-							},
-							"from": {
-								"title": "From",
-								"type": "string"
-							}
-						}
-					},
-					"ERC721": {
-						"required": ["ethereumTx", "logIndex", "tokenAddress", "to", "tokenId", "from"],
-						"type": "object",
-						"properties": {
-							"id": {
-								"title": "ID",
-								"type": "integer",
-								"readOnly": true
-							},
-							"ethereumTx": {
-								"$ref": "#/definitions/EthereumTx"
-							},
-							"logIndex": {
-								"title": "Log index",
-								"type": "integer",
-								"minimum": 0
-							},
-							"tokenAddress": {
-								"title": "Token address",
-								"type": "string"
-							},
-							"to": {
-								"title": "To",
-								"type": "string"
-							},
-							"tokenId": {
-								"title": "Token id",
-								"type": "string",
-								"minLength": 1
-							},
-							"from": {
-								"title": "From",
-								"type": "string"
-							}
-						}
-					},
-					"tags": []
-				}
-			}
-		}
-	}
+  "swagger": "2.0",
+  "info": {
+    "title": "ArcherDAO Swagger 2.0 API",
+    "description": "API to manage creation of ArcherDAO Transactions",
+    "contact": {
+      "email": "ops@manifoldfinance.com"
+    },
+    "license": {
+      "name": "MIT License"
+    },
+    "version": "v1"
+  },
+  "host": "relay.backbonecabal.net",
+  "schemes": ["https"],
+  "basePath": "/api",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "Basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "Basic": []
+    }
+  ],
+  "paths": {
+    "/v1/eth/": {
+      "get": {
+        "summary": "Request",
+        "description": "",
+        "operationId": "046aae7f-1487-4768-83ca-0d7b70d345e5",
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/v1/eth/getPrice": {
+      "get": {
+        "summary": "getPrice(address,bytes) [read only]",
+        "description": "",
+        "operationId": "94e6c030-30cc-4754-a635-9a8f1ddfc17d",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "contractAddress",
+            "description": "address: contract to query",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "",
+            "name": "data",
+            "description": "bytes: the bytecode for the contract call",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "getPrice(address,bytes) [read only]",
+        "description": "",
+        "operationId": "ffd828ca-5d47-4309-9d66-dc08c8b02904",
+        "consumes": ["application/json", "application/x-yaml"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/v1/eth/query": {
+      "get": {
+        "summary": "query(bytes,uint256[]) [read only]",
+        "description": "",
+        "operationId": "8d380d9c-a9ce-4df8-86c3-dbd4848ed96a",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "script",
+            "description": "bytes: the compiled bytecode for the series of function calls to get the final price",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "",
+            "name": "inputLocations",
+            "description": "uint256[]: index locations within the script to insert input amounts dynamically",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "query(bytes,uint256[]) [read only]",
+        "description": "",
+        "operationId": "d97f343f-de08-454c-bc4e-32afd1cfb3d2",
+        "consumes": ["application/json", "application/x-yaml"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/v1/eth/queryAllPrices": {
+      "get": {
+        "summary": "queryAllPrices(bytes,uint256[]) [read only]",
+        "description": "",
+        "operationId": "e4da08d3-aae2-48de-9f9d-cd7041af81b4",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "script",
+            "description": "bytes: the compiled bytecode for the series of function calls to get the final price",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "",
+            "name": "inputLocations",
+            "description": "uint256[]: index locations within the script to insert input amounts dynamically",
+            "required": true,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "queryAllPrices(bytes,uint256[]) [read only]",
+        "description": "",
+        "operationId": "1939a673-a9c4-4507-83b4-87f7a56c8838",
+        "consumes": ["application/json", "application/x-yaml"],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "code": {
+      "description": ""
+    }
+  },
+  "definitions": {
+    "GasPrice": {
+      "required": [
+        "lastUpdate",
+        "lowest",
+        "safeLow",
+        "standard",
+        "fast",
+        "fastest"
+      ],
+      "type": "object",
+      "properties": {
+        "lastUpdate": {
+          "title": "Last update",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lowest": {
+          "title": "Lowest",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "safeLow": {
+          "title": "Safe low",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "standard": {
+          "title": "Standard",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "fast": {
+          "title": "Fast",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "fastest": {
+          "title": "Fastest",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1,
+          "EthereumTx": {
+            "title": "Ethereum tx",
+            "required": [
+              "txHash",
+              "to",
+              "data",
+              "gas",
+              "gasPrice",
+              "nonce",
+              "value",
+              "from"
+            ],
+            "type": "object",
+            "properties": {
+              "txHash": {
+                "title": "Tx hash",
+                "type": "string"
+              },
+              "to": {
+                "title": "To",
+                "type": "string"
+              },
+              "data": {
+                "title": "Data",
+                "type": "string"
+              },
+              "blockNumber": {
+                "title": "Block number",
+                "type": "string",
+                "readOnly": true
+              },
+              "blockTimestamp": {
+                "title": "Block timestamp",
+                "type": "string",
+                "readOnly": true
+              },
+              "created": {
+                "title": "Created",
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "modified": {
+                "title": "Modified",
+                "type": "string",
+                "format": "date-time",
+                "readOnly": true
+              },
+              "gasUsed": {
+                "title": "Gas used",
+                "type": "string",
+                "format": "decimal",
+                "x-nullable": true
+              },
+              "status": {
+                "title": "Status",
+                "type": "integer",
+                "maximum": 2147483647,
+                "minimum": -2147483648,
+                "x-nullable": true
+              },
+              "transactionIndex": {
+                "title": "Transaction index",
+                "type": "integer",
+                "maximum": 2147483647,
+                "minimum": 0,
+                "x-nullable": true
+              },
+              "gas": {
+                "title": "Gas",
+                "type": "string",
+                "format": "decimal"
+              },
+              "gasPrice": {
+                "title": "Gas price",
+                "type": "string",
+                "format": "decimal"
+              },
+              "nonce": {
+                "title": "Nonce",
+                "type": "string",
+                "format": "decimal"
+              },
+              "value": {
+                "title": "Value",
+                "type": "string",
+                "format": "decimal"
+              },
+              "from": {
+                "title": "From",
+                "type": "string"
+              }
+            }
+          },
+          "ERC20": {
+            "required": [
+              "ethereumTx",
+              "logIndex",
+              "tokenAddress",
+              "to",
+              "value",
+              "from"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "title": "ID",
+                "type": "integer",
+                "readOnly": true
+              },
+              "ethereumTx": {
+                "$ref": "#/definitions/EthereumTx"
+              },
+              "logIndex": {
+                "title": "Log index",
+                "type": "integer",
+                "minimum": 0
+              },
+              "tokenAddress": {
+                "title": "Token address",
+                "type": "string"
+              },
+              "to": {
+                "title": "To",
+                "type": "string"
+              },
+              "value": {
+                "title": "Value",
+                "type": "string",
+                "minLength": 1
+              },
+              "from": {
+                "title": "From",
+                "type": "string"
+              }
+            }
+          },
+          "ERC721": {
+            "required": [
+              "ethereumTx",
+              "logIndex",
+              "tokenAddress",
+              "to",
+              "tokenId",
+              "from"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "title": "ID",
+                "type": "integer",
+                "readOnly": true
+              },
+              "ethereumTx": {
+                "$ref": "#/definitions/EthereumTx"
+              },
+              "logIndex": {
+                "title": "Log index",
+                "type": "integer",
+                "minimum": 0
+              },
+              "tokenAddress": {
+                "title": "Token address",
+                "type": "string"
+              },
+              "to": {
+                "title": "To",
+                "type": "string"
+              },
+              "tokenId": {
+                "title": "Token id",
+                "type": "string",
+                "minLength": 1
+              },
+              "from": {
+                "title": "From",
+                "type": "string"
+              }
+            }
+          },
+          "tags": []
+        }
+      }
+    }
+  }
 }

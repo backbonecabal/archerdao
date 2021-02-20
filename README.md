@@ -1,7 +1,6 @@
 # ArcherDAO API
 
-
-## Overview 
+## Overview
 
 ### Strategies & Bankrolls
 
@@ -23,6 +22,6 @@ No significant bankroll required
 Externally-provided bankroll, without carry risk
 Externally-provided bankroll, with carry risk
 
-## License 
+## License
 
 Apache-2.0

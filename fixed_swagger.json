@@ -5,9 +5,7 @@
     "version": "v0.0.0"
   },
   "host": "archer.backbonecabal.com",
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "basePath": "/gateways/archerdao//",
   "paths": {
     "/": {
@@ -55,10 +53,7 @@
         "summary": "getPrice(address,bytes) [read only]",
         "description": "",
         "operationId": "ffd828ca-5d47-4309-9d66-dc08c8b02904",
-        "consumes": [
-          "application/json",
-          "application/x-yaml"
-        ],
+        "consumes": ["application/json", "application/x-yaml"],
         "parameters": [
           {
             "required": false,
@@ -110,10 +105,7 @@
         "summary": "query(bytes,uint256[]) [read only]",
         "description": "",
         "operationId": "d97f343f-de08-454c-bc4e-32afd1cfb3d2",
-        "consumes": [
-          "application/json",
-          "application/x-yaml"
-        ],
+        "consumes": ["application/json", "application/x-yaml"],
         "parameters": [
           {
             "required": false,
@@ -165,10 +157,7 @@
         "summary": "queryAllPrices(bytes,uint256[]) [read only]",
         "description": "",
         "operationId": "1939a673-a9c4-4507-83b4-87f7a56c8838",
-        "consumes": [
-          "application/json",
-          "application/x-yaml"
-        ],
+        "consumes": ["application/json", "application/x-yaml"],
         "parameters": [
           {
             "required": false,
