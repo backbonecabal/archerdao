@@ -1,0 +1,26 @@
+{
+  "parser": {
+    "abi": {
+      "inputs": [],
+      "name": "DEFAULT_ADMIN_ROLE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    "contract_address": "0xc9da1ac41e67059cb8a6fc641bd8abaafc72829d",
+    "field_mapping": {},
+    "type": "trace"
+  },
+  "table": {
+    "dataset_name": "<INSERT_DATASET_NAME>",
+    "schema": [],
+    "table_description": "",
+    "table_name": "<TABLE_PREFIX>_event_DEFAULT_ADMIN_ROLE"
+  }
+}

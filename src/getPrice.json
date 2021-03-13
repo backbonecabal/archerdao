@@ -1,0 +1,48 @@
+{
+  "parser": {
+    "abi": {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "contractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "getPrice",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    "contract_address": "0x62e34f7d2bb56c1c37a2c21fa89d0cf1291cf7d1",
+    "field_mapping": {},
+    "type": "trace"
+  },
+  "table": {
+    "dataset_name": "<INSERT_DATASET_NAME>",
+    "schema": [
+      {
+        "description": "",
+        "name": "contractAddress",
+        "type": "STRING"
+      },
+      {
+        "description": "",
+        "name": "data",
+        "type": "STRING"
+      }
+    ],
+    "table_description": "",
+    "table_name": "<TABLE_PREFIX>_event_getPrice"
+  }
+}

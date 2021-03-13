@@ -1,0 +1,30 @@
+{
+  "name": "archerdao-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manifoldfinance/archer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manifoldfinance/archer/issues"
+  },
+  "homepage": "https://github.com/manifoldfinance/archer#readme",
+  "devDependencies": {
+    "swagger-ts-generator": "^1.2.11"
+  },
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-load-plugins": "^2.0.6",
+    "request": "^2.88.2",
+    "vinyl-source-stream": "^2.0.0",
+    "yargs": "^16.2.0"
+  }
+}

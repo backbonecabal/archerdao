@@ -1,0 +1,54 @@
+{
+  "parser": {
+    "abi": {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "RoleRevoked",
+      "type": "event"
+    },
+    "contract_address": "0xc9da1ac41e67059cb8a6fc641bd8abaafc72829d",
+    "field_mapping": {},
+    "type": "log"
+  },
+  "table": {
+    "dataset_name": "ArcherDAO_Dispatcher",
+    "schema": [
+      {
+        "description": "",
+        "name": "role",
+        "type": "STRING"
+      },
+      {
+        "description": "",
+        "name": "account",
+        "type": "STRING"
+      },
+      {
+        "description": "",
+        "name": "sender",
+        "type": "STRING"
+      }
+    ],
+    "table_description": "",
+    "table_name": "DispatcherFactory_event_RoleRevoked"
+  }
+}

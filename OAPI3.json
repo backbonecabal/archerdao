@@ -1,14 +1,11 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "ArhcerDAO3",
     "version": "v0.0.0",
     "description": "ArhcerDAO API",
     "license": "README.md"
   },
-  "host": "archer.backbonecabal.com",
-  "schemes": ["https"],
-  "basePath": "/gateways/archerdao//",
   "paths": {
     "/": {
       "get": {
@@ -29,20 +26,24 @@
         "operationId": "94e6c030-30cc-4754-a635-9a8f1ddfc17d",
         "parameters": [
           {
-            "type": "string",
-            "default": "",
             "name": "contractAddress",
             "description": "address: contract to query",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           },
           {
-            "type": "string",
-            "default": "",
             "name": "data",
             "description": "bytes: the bytecode for the contract call",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           }
         ],
         "responses": {
@@ -55,18 +56,9 @@
         "summary": "getPrice(address,bytes) [read only]",
         "description": "",
         "operationId": "ffd828ca-5d47-4309-9d66-dc08c8b02904",
-        "consumes": ["application/json", "application/x-yaml"],
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            },
-            "in": "body",
-            "name": "body"
-          }
-        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ffd828ca-5d47-4309-9d66-dc08c8b02904Body"
+        },
         "responses": {
           "default": {
             "description": "no response description was provided for this operation"
@@ -81,20 +73,24 @@
         "operationId": "8d380d9c-a9ce-4df8-86c3-dbd4848ed96a",
         "parameters": [
           {
-            "type": "string",
-            "default": "",
             "name": "script",
             "description": "bytes: the compiled bytecode for the series of function calls to get the final price",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           },
           {
-            "type": "string",
-            "default": "",
             "name": "inputLocations",
             "description": "uint256[]: index locations within the script to insert input amounts dynamically",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           }
         ],
         "responses": {
@@ -107,18 +103,9 @@
         "summary": "query(bytes,uint256[]) [read only]",
         "description": "",
         "operationId": "d97f343f-de08-454c-bc4e-32afd1cfb3d2",
-        "consumes": ["application/json", "application/x-yaml"],
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            },
-            "in": "body",
-            "name": "body"
-          }
-        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ffd828ca-5d47-4309-9d66-dc08c8b02904Body"
+        },
         "responses": {
           "default": {
             "description": "no response description was provided for this operation"
@@ -133,20 +120,24 @@
         "operationId": "e4da08d3-aae2-48de-9f9d-cd7041af81b4",
         "parameters": [
           {
-            "type": "string",
-            "default": "",
             "name": "script",
             "description": "bytes: the compiled bytecode for the series of function calls to get the final price",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           },
           {
-            "type": "string",
-            "default": "",
             "name": "inputLocations",
             "description": "uint256[]: index locations within the script to insert input amounts dynamically",
             "required": true,
-            "in": "query"
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
           }
         ],
         "responses": {
@@ -159,18 +150,9 @@
         "summary": "queryAllPrices(bytes,uint256[]) [read only]",
         "description": "",
         "operationId": "1939a673-a9c4-4507-83b4-87f7a56c8838",
-        "consumes": ["application/json", "application/x-yaml"],
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            },
-            "in": "body",
-            "name": "body"
-          }
-        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ffd828ca-5d47-4309-9d66-dc08c8b02904Body"
+        },
         "responses": {
           "default": {
             "description": "no response description was provided for this operation"
@@ -179,5 +161,30 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "servers": [
+    {
+      "url": "https://archer.backbonecabal.com/gateways/archerdao/"
+    }
+  ],
+  "components": {
+    "requestBodies": {
+      "ffd828ca-5d47-4309-9d66-dc08c8b02904Body": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          "application/x-yaml": {
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        }
+      }
+    }
+  }
 }
