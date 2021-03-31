@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "ArhcerDAO3",
-    "version": "v0.2.0,
+    "version": "v0.2.1",
     "description": "ArhcerDAO API",
     "license": "https://github.com/archerdao/archer-core/blob/master/README.md"
   },
