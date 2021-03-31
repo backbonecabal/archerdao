@@ -2,30 +2,30 @@
   "swagger": "2.0",
   "info": {
     "title": "ArhcerDAO3",
-    "version": "v0.0.0",
+    "version": "v0.2.0,
     "description": "ArhcerDAO API",
-    "license": "README.md"
+    "license": "https://github.com/archerdao/archer-core/blob/master/README.md"
   },
-  "host": "archer.backbonecabal.com",
-  "schemes": ["https"],
-  "basePath": "/gateways/archerdao//",
+  "host": "http://localhost:8443",
+  "schemes": ["http"],
+  "basePath": "/gateways/archerdao/",
   "paths": {
-    "/": {
+   "/v1/stats/": {
       "get": {
-        "summary": "Request",
-        "description": "",
+        "summary": "Stats",
+        "description": "Subgraph Stats from ArcherDAO",
         "operationId": "046aae7f-1487-4768-83ca-0d7b70d345e5",
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       }
     },
-    "/getPrice": {
+    "/v1/getPrice": {
       "get": {
         "summary": "getPrice(address,bytes) [read only]",
-        "description": "",
+        "description": "getPrice normal eth_Call",
         "operationId": "94e6c030-30cc-4754-a635-9a8f1ddfc17d",
         "parameters": [
           {
@@ -46,14 +46,14 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       },
       "post": {
         "summary": "getPrice(address,bytes) [read only]",
-        "description": "",
+        "description": "multicall eth_Call",
         "operationId": "ffd828ca-5d47-4309-9d66-dc08c8b02904",
         "consumes": ["application/json", "application/x-yaml"],
         "parameters": [
@@ -74,10 +74,10 @@
         }
       }
     },
-    "/query": {
+    "/v1/query": {
       "get": {
         "summary": "query(bytes,uint256[]) [read only]",
-        "description": "",
+        "description": "Query ArcherDAO, normal eth_Call",
         "operationId": "8d380d9c-a9ce-4df8-86c3-dbd4848ed96a",
         "parameters": [
           {
@@ -98,14 +98,14 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       },
       "post": {
         "summary": "query(bytes,uint256[]) [read only]",
-        "description": "",
+        "description": "multicall eth_Call post",
         "operationId": "d97f343f-de08-454c-bc4e-32afd1cfb3d2",
         "consumes": ["application/json", "application/x-yaml"],
         "parameters": [
@@ -120,13 +120,13 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       }
     },
-    "/queryAllPrices": {
+    "/v1/queryAllPrices": {
       "get": {
         "summary": "queryAllPrices(bytes,uint256[]) [read only]",
         "description": "",
@@ -150,8 +150,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       },
@@ -172,12 +172,12 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "no response description was provided for this operation"
+          "200": {
+            "description": "200"
           }
         }
       }
     }
   },
-  "tags": []
+  "tags": ["v1"]
 }
