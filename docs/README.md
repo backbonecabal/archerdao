@@ -1,16 +1,14 @@
-# swagger_client.DefaultApi
-
-All URIs are relative to _https://archer.backbonecabal.com/gateways/archerdao_
+# ArcherDAO API
 
 | Method                                                           | HTTP request                       | Description                                 |
 | ---------------------------------------------------------------- | ---------------------------------- | ------------------------------------------- |
-| [**constructor_post**](DefaultApi.md#constructor_post)           | **POST** /                         | constructor()                               |
-| [**get_price_get**](DefaultApi.md#get_price_get)                 | **GET** /{address}/getPrice        | getPrice(address,bytes) [read only]         |
-| [**get_price_post**](DefaultApi.md#get_price_post)               | **POST** /{address}/getPrice       | getPrice(address,bytes) [read only]         |
-| [**query_all_prices_get**](DefaultApi.md#query_all_prices_get)   | **GET** /{address}/queryAllPrices  | queryAllPrices(bytes,uint256[]) [read only] |
-| [**query_all_prices_post**](DefaultApi.md#query_all_prices_post) | **POST** /{address}/queryAllPrices | queryAllPrices(bytes,uint256[]) [read only] |
-| [**query_get**](DefaultApi.md#query_get)                         | **GET** /{address}/query           | query(bytes,uint256[]) [read only]          |
-| [**query_post**](DefaultApi.md#query_post)                       | **POST** /{address}/query          | query(bytes,uint256[]) [read only]          |
+| [**constructor_post**](DefaultApi.md#constructor_post)           | **POST** /v1/constructor           | constructor()                               |
+| [**get_price_get**](DefaultApi.md#get_price_get)                 | **GET** /v1/{address}/getPrice     | getPrice(address,bytes) [read only]         |
+| [**get_price_post**](DefaultApi.md#get_price_post)               | **POST** /v1/{address}/getPrice       | getPrice(address,bytes) [read only]         |
+| [**query_all_prices_get**](DefaultApi.md#query_all_prices_get)   | **GET** /v1/{address}/queryAllPrices  | queryAllPrices(bytes,uint256[]) [read only] |
+| [**query_all_prices_post**](DefaultApi.md#query_all_prices_post) | **POST** /v1/{address}/queryAllPrices | queryAllPrices(bytes,uint256[]) [read only] |
+| [**query_get**](DefaultApi.md#query_get)                         | **GET** /v1/{address}/query           | query(bytes,uint256[]) [read only]          |
+| [**query_post**](DefaultApi.md#query_post)                       | **POST** /v1/{address}/query          | query(bytes,uint256[]) [read only]          |
 
 # **constructor_post**
 
